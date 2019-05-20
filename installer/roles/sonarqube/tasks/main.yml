@@ -1,0 +1,53 @@
+---
+- name: Create data volume for SonarQube's Postgres
+  docker_volume:
+    name: sonar-db-data
+
+- name: Pull Postgres Docker image
+  docker_image:
+    name: postgres:9.6.13
+    source: pull
+
+- name: Create Postgres container for SonarQube
+  docker_container:
+    name: sonardb
+    image: postgres:9.6.13
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - sonardb
+    purge_networks: yes
+    env:
+      POSTGRES_USER: "{{ sonar_db_user }}"
+      POSTGRES_PASSWORD: "{{ sonar_db_pass }}"
+      POSTGRES_DB: "{{ sonar_db_name }}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - sonar-db-data:/var/lib/postgresql/data
+
+- name: Pull SonarQube Docker image
+  docker_image:
+    name: sonarqube:lts
+    source: pull
+
+- name: Create SonarQube Docker container
+  docker_container:
+    name: sonar
+    image: sonarqube:lts
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - sonar
+    purge_networks: yes
+    env:
+      SONARQUBE_JDBC_USERNAME: "{{ sonar_db_user }}"
+      SONARQUBE_JDBC_PASSWORD: "{{ sonar_db_pass }}"
+      SONARQUBE_JDBC_URL: "jdbc:postgresql://sonardb:5432/{{ sonar_db_name }}"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.port: "9000"
+      traefik.protocol: "http"
+      traefik.frontend.rule: "Host:sonar.{{ domain }}"

@@ -1,0 +1,15 @@
+---
+- name: Create an administrator account
+  user:
+    name: admin
+    password: "{{ adminpassword | password_hash('sha512') }}"
+    shell: /bin/bash
+    groups:
+      - sudo
+    append: yes
+
+- name: Set authorized key for administrator account 
+  authorized_key:
+    user: admin
+    state: present
+    key: "{{ lookup('file', 'files/admin_key.pub') }}"

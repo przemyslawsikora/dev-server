@@ -1,0 +1,30 @@
+---
+- name: Create data volume for Jenkins
+  docker_volume:
+    name: jenkins-data
+
+- name: Pull Jenkins Docker image
+  docker_image:
+    name: jenkins/jenkins:lts-jdk11
+    source: pull
+
+- name: Create Jenkins Docker container
+  docker_container:
+    name: jenkins
+    image: jenkins/jenkins:lts-jdk11
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - jenkins
+    purge_networks: yes
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins-data:/var/jenkins_home
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.port: "8080"
+      traefik.protocol: "http"
+      traefik.frontend.rule: "Host:jenkins.{{ domain }}"

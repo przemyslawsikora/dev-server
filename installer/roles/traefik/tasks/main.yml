@@ -1,0 +1,36 @@
+---
+- name: Pull Traefik Docker image
+  docker_image:
+    name: traefik:v1.7.11-alpine
+    source: pull
+
+- name: Build the configuration file
+  template:
+    src: traefik.toml.j2
+    dest: /etc/traefik.toml
+
+- name: Create file to store SSL certificates
+  file:
+    path: /etc/traefik_acme.json
+    state: touch
+    mode: "600"
+
+- name: Create Traefik Docker container
+  docker_container:
+    name: traefik
+    image: traefik:v1.7.11-alpine
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - traefik
+    purge_networks: yes
+    command: "--api"
+    ports:
+      - 80:80
+      - 443:443
+      - 127.0.0.1:7777:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/traefik.toml:/traefik.toml
+      - /etc/traefik_acme.json:/acme.json

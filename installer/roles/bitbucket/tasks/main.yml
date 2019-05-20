@@ -1,0 +1,60 @@
+---
+- name: Create data volume for Bitbucket's Postgres
+  docker_volume:
+    name: bitbucket-db-data
+
+- name: Pull Postgres Docker image
+  docker_image:
+    name: postgres:9.6.13
+    source: pull
+
+- name: Create Postgres container for Bitbucket
+  docker_container:
+    name: bitbucketdb
+    image: postgres:9.6.13
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - bitbucketdb
+    purge_networks: yes
+    env:
+      POSTGRES_USER: "{{ bitbucket_db_user }}"
+      POSTGRES_PASSWORD: "{{ bitbucket_db_pass }}"
+      POSTGRES_DB: "{{ bitbucket_db_name }}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - bitbucket-db-data:/var/lib/postgresql/data
+
+- name: Create data volume for Bitbucket
+  docker_volume:
+    name: bitbucket-data
+      
+- name: Pull Bitbucket Docker image
+  docker_image:
+    name: atlassian/bitbucket-server:6.2.1
+    source: pull
+
+- name: Create Bitbucket Server Docker container
+  docker_container:
+    name: bitbucket
+    image: atlassian/bitbucket-server:6.2.1
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - bitbucket
+    purge_networks: yes
+    env:
+      SERVER_SECURE: "true"
+      SERVER_SCHEME: "https"
+      SERVER_PROXY_PORT: "443"
+      SERVER_PROXY_NAME: "bitbucket.{{ domain }}"
+    volumes:
+      - bitbucket-data:/var/atlassian/application-data/bitbucket
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.port: "7990"
+      traefik.protocol: "http"
+      traefik.frontend.rule: "Host:bitbucket.{{ domain }}"

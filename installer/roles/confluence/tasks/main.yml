@@ -1,0 +1,60 @@
+---
+- name: Create data volume for Confluence's Postgres
+  docker_volume:
+    name: confluence-db-data
+
+- name: Pull Postgres Docker image
+  docker_image:
+    name: postgres:9.6.13
+    source: pull
+
+- name: Create Postgres container for Confluence
+  docker_container:
+    name: confluencedb
+    image: postgres:9.6.13
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - confluencedb
+    purge_networks: yes
+    env:
+      POSTGRES_USER: "{{ confluence_db_user }}"
+      POSTGRES_PASSWORD: "{{ confluence_db_pass }}"
+      POSTGRES_DB: "{{ confluence_db_name }}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - confluence-db-data:/var/lib/postgresql/data
+
+- name: Create data volume for Confluence
+  docker_volume:
+    name: confluence-data
+      
+- name: Pull Confluence Docker image
+  docker_image:
+    name: atlassian/confluence-server:6.15
+    source: pull
+
+- name: Create Confluence Server Docker container
+  docker_container:
+    name: confluence
+    image: atlassian/confluence-server:6.15
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - confluence
+    purge_networks: yes
+    env:
+      CATALINA_CONNECTOR_PROXYNAME: "confluence.{{ domain }}"
+      CATALINA_CONNECTOR_PROXYPORT: "443"
+      CATALINA_CONNECTOR_SCHEME: "https"
+      CATALINA_CONNECTOR_SECURE: "true"
+    volumes:
+      - confluence-data:/var/atlassian/application-data/confluence
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.port: "8090"
+      traefik.protocol: "http"
+      traefik.frontend.rule: "Host:confluence.{{ domain }}"

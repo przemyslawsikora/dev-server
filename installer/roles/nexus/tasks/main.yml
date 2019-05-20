@@ -1,0 +1,31 @@
+---
+- name: Create data volume for Sonatype Nexus
+  docker_volume:
+    name: nexus-data
+
+- name: Pull Nexus Software Docker image
+  docker_image:
+    name: sonatype/nexus3:3.16.1
+    source: pull
+
+- name: Create Nexus Software Docker container
+  docker_container:
+    name: nexus
+    image: sonatype/nexus3:3.16.1
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - nexus
+    purge_networks: yes
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.nexus.frontend.rule: "Host:nexus.{{ domain }}"
+      traefik.nexus.protocol: "http"
+      traefik.nexus.port: "8081"
+      traefik.docker.frontend.rule: "Host:docker.{{ domain }}"
+      traefik.docker.protocol: "http"
+      traefik.docker.port: "8100"
+    volumes:
+      - nexus-data:/nexus-data

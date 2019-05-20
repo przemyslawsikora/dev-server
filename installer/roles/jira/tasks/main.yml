@@ -1,0 +1,59 @@
+---
+- name: Create data volume for Jira's Postgres
+  docker_volume:
+    name: jira-db-data
+
+- name: Pull Postgres Docker image
+  docker_image:
+    name: postgres:9.6.13
+    source: pull
+
+- name: Create Postgres container for Jira
+  docker_container:
+    name: jiradb
+    image: postgres:9.6.13
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - jiradb
+    purge_networks: yes
+    env:
+      POSTGRES_USER: "{{ jira_db_user }}"
+      POSTGRES_PASSWORD: "{{ jira_db_pass }}"
+      POSTGRES_DB: "{{ jira_db_name }}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - jira-db-data:/var/lib/postgresql/data
+
+- name: Create data volume for Jira
+  docker_volume:
+    name: jira-data
+
+- name: Pull Jira Software Docker image
+  docker_image:
+    name: cptactionhank/atlassian-jira-software:8.1.0
+    source: pull
+
+- name: Create Jira Software Docker container
+  docker_container:
+    name: jira
+    image: cptactionhank/atlassian-jira-software:8.1.0
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network_name }}"
+        aliases:
+          - jira
+    purge_networks: yes
+    env:
+      X_PROXY_NAME: "jira.{{ domain }}"
+      X_PROXY_SCHEME: "https"
+      X_PROXY_PORT: "443"
+    volumes:
+      - jira-data:/var/atlassian/jira
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "{{ docker_network_name }}"
+      traefik.port: "8080"
+      traefik.protocol: "http"
+      traefik.frontend.rule: "Host:jira.{{ domain }}"

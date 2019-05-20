@@ -1,0 +1,22 @@
+domain: example.com
+admin_email: jsmith@example.com
+docker_network_name: server_network
+
+jira_db_name: jira
+jira_db_user: postgres
+jira_db_pass: 1234567890
+
+bitbucket_db_name: bitbucket
+bitbucket_db_user: postgres
+bitbucket_db_pass: 1234567890
+
+confluence_db_name: confluence
+confluence_db_user: postgres
+confluence_db_pass: 1234567890
+
+sonar_db_name: sonar
+sonar_db_user: postgres
+sonar_db_pass: 1234567890
+
+jenkins_ui_port: 8099
+jenkins_slave_agent_port: 50000

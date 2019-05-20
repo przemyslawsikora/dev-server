@@ -1,0 +1,28 @@
+---
+- name: Configure sshd. Set client alive interval
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: 'ClientAliveInterval \d+'
+    line: 'ClientAliveInterval 120'
+  notify: 'restart sshd'
+
+- name: Configure sshd. Set client alive count max
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: 'ClientAliveCountMax \d+'
+    line: 'ClientAliveCountMax 720'
+  notify: 'restart sshd'
+
+- name: Configure sshd. Disable password suthentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication (yes|no)'
+    line: 'PasswordAuthentication no'
+  notify: 'restart sshd'
+    
+- name: Configure sshd. Disable root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: 'PermitRootLogin (yes|no)'
+    line: 'PermitRootLogin no'
+  notify: 'restart sshd'

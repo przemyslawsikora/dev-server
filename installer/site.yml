@@ -1,0 +1,101 @@
+---
+- name: Manage an admin user
+  hosts: all
+  connection: local
+  become: yes
+  roles:
+    - users
+
+- name: Prepare server
+  hosts: all
+  connection: local
+  become: yes
+  roles:
+    - sshd
+
+- name: Install Docker
+  hosts: all
+  connection: local
+  become: yes
+  roles:
+    - geerlingguy.docker
+    - geerlingguy.pip
+  vars:
+    docker_users:
+      - admin
+    pip_install_packages:
+      - name: docker
+
+- name: Create common Docker network
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  tasks:
+    - name: Create common Docker network
+      docker_network:
+        name: "{{ docker_network_name }}"
+
+- name: Install Traefik (with SSL certificates managing)
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - traefik
+
+- name: Install Jira Software server
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - jira
+
+- name: Install Bitbucket server
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - bitbucket
+
+- name: Install Confluence server
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - confluence
+
+- name: Install Jenkins
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - jenkins
+
+- name: Install Sonatype Nexus
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - nexus
+
+- name: Install SonarQube
+  hosts: all
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+    - sonarqube
