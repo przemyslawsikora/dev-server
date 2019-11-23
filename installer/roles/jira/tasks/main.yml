@@ -5,13 +5,13 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6.13
+    name: postgres:9.6.16
     source: pull
 
 - name: Create Postgres container for Jira
   docker_container:
     name: jiradb
-    image: postgres:9.6.13
+    image: postgres:9.6.16
     restart_policy: always
     networks:
       - name: "{{ docker_network_name }}"
@@ -32,13 +32,13 @@
 
 - name: Pull Jira Software Docker image
   docker_image:
-    name: cptactionhank/atlassian-jira-software:8.1.0
+    name: atlassian/jira-software:8.5
     source: pull
 
 - name: Create Jira Software Docker container
   docker_container:
     name: jira
-    image: cptactionhank/atlassian-jira-software:8.1.0
+    image: atlassian/jira-software:8.5
     restart_policy: always
     networks:
       - name: "{{ docker_network_name }}"
@@ -46,11 +46,12 @@
           - jira
     purge_networks: yes
     env:
-      X_PROXY_NAME: "jira.{{ domain }}"
-      X_PROXY_SCHEME: "https"
-      X_PROXY_PORT: "443"
+      ATL_PROXY_NAME: "jira.{{ domain }}"
+      ATL_PROXY_PORT: "443"
+      ATL_TOMCAT_SCHEME: "https"
+      ATL_TOMCAT_SECURE: "true"
     volumes:
-      - jira-data:/var/atlassian/jira
+      - jira-data:/var/atlassian/application-data/jira
     labels:
       traefik.enable: "true"
       traefik.docker.network: "{{ docker_network_name }}"
