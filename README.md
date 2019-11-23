@@ -1,7 +1,7 @@
 ## Dev Server
 
-Installer of applications for software development.  
-It includes:
+This repository contains installer that allows you to install the system for software development.  
+Dev Server includes:
 - Atlassian Jira
 - Atlassian Bitbucket
 - Atlassian Confluence
@@ -9,12 +9,12 @@ It includes:
 - Nexus Repository Manager
 - SonarQube
 
-You must have licenses for Atlassian products!  
-Jenkins, Nexus and SonarQube are in community version.
+**Note**: You must have licenses for Atlassian products!  
+Jenkins, Nexus and SonarQube are in community versions.
 
 #### Guide to install the software
 
-1. Prepare server with Ubuntu 18 (tested with Ubuntu 18.04)
+1. Prepare server with Ubuntu (tested with Ubuntu 18.04)
 2. Connect via SSH to your server as root user
 3. Install Ansible
    ```bash
@@ -23,25 +23,37 @@ Jenkins, Nexus and SonarQube are in community version.
    sudo apt-add-repository --yes --update ppa:ansible/ansible
    sudo apt-get install ansible
    ```
-4. Pull the GIT repository (master branch)
-5. Create private and public key for user admin (use PuttyGen or similar software)
+4. Clone the GIT repository (master branch)
+   ```bash
+   git clone https://github.com/przemyslawsikora/dev-server.git
+   ```
+5. Create private and public key for your user from which you can login to the system 
+   via SSH (use PuttyGen on Windows or ssh-keygen on Linux, MacOS)
 6. Copy the public key into the <code>installer/roles/users/files</code> as <code>admin_key.pub</code>  
    Ensure the content is similar to
+   ```bash
+   ssh-rsa AAAAB3...36== {user_name}
    ```
-   ssh-rsa AAAAB3...36== admin
+7. Optional but **recommended** - change the default passwords in the file <code>secret.yml</code>  
+   Default vault password used to open and edit the file is <code>12345</code>
+   ```bash
+   ansible-vault edit installer/vars/secret.yml
    ```
-7. Open <code>installer/vars/all.yml</code> file and change the content, especially:
+   Change also the vault password
+   ```bash
+   ansible-vault rekey installer/vars/secret.yml
+   ```
+8. Open <code>installer/vars/all.yml</code> file and change the content, especially:
    - domain
    - admin_email
-   - database passwords
-8. Enter directory <code>installer</code>
-9. Install Ansible roles
+9. Enter directory <code>installer</code>
+10. Install Ansible roles
    ```bash
    ansible-galaxy install -r requirements.yml
    ```
-10. Run installer and set up admin password
+11. Run installer
    ```bash
-   ansible-playbook site.yml -i production --extra-vars "adminpassword=<admin password here>"
+   ansible-playbook site.yml -i production --ask-vault-pass
    ```
 
 After installation, you should have accessible following applications:
