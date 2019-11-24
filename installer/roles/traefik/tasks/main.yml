@@ -20,11 +20,11 @@
     name: traefik
     image: traefik:1.7
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - traefik
-    purge_networks: yes
     command: "--api"
     ports:
       - 80:80

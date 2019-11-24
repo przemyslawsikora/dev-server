@@ -5,19 +5,19 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6.16
+    name: postgres:9.6
     source: pull
 
 - name: Create Postgres container for Jira
   docker_container:
     name: jiradb
-    image: postgres:9.6.16
+    image: postgres:9.6
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - jiradb
-    purge_networks: yes
     env:
       POSTGRES_USER: "{{ jira_db_user }}"
       POSTGRES_PASSWORD: "{{ jira_db_pass }}"
@@ -40,11 +40,11 @@
     name: jira
     image: atlassian/jira-software:8.5
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - jira
-    purge_networks: yes
     env:
       ATL_PROXY_NAME: "jira.{{ domain }}"
       ATL_PROXY_PORT: "443"
