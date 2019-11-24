@@ -1,7 +1,7 @@
 ---
 - name: Pull Traefik Docker image
   docker_image:
-    name: traefik:v1.7.11-alpine
+    name: traefik:1.7
     source: pull
 
 - name: Build the configuration file
@@ -18,7 +18,7 @@
 - name: Create Traefik Docker container
   docker_container:
     name: traefik
-    image: traefik:v1.7.11-alpine
+    image: traefik:1.7
     restart_policy: always
     networks:
       - name: "{{ docker_network_name }}"

@@ -3,6 +3,8 @@
   hosts: all
   connection: local
   become: yes
+  vars_files:
+    - vars/secret.yml
   roles:
     - users
 
@@ -52,6 +54,7 @@
   become: yes
   vars_files:
     - vars/all.yml
+    - vars/secret.yml
   roles:
     - jira
 
@@ -61,6 +64,7 @@
   become: yes
   vars_files:
     - vars/all.yml
+    - vars/secret.yml
   roles:
     - bitbucket
 
@@ -70,6 +74,7 @@
   become: yes
   vars_files:
     - vars/all.yml
+    - vars/secret.yml
   roles:
     - confluence
 
@@ -97,5 +102,6 @@
   become: yes
   vars_files:
     - vars/all.yml
+    - vars/secret.yml
   roles:
     - sonarqube

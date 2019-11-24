@@ -1,6 +1,6 @@
 ## Dev Server
 
-This repository contains installer that allows you to install the system for software development.  
+This repository contains installer that allows you to set up the system for software development.  
 Dev Server includes:
 - Atlassian Jira
 - Atlassian Bitbucket
