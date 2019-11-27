@@ -58,15 +58,15 @@ Jenkins, Nexus and SonarQube are in community versions.
 
 After installation, you should have accessible following applications:
 
-| Application                        	| Address                        	|
-|------------------------------------	|--------------------------------	|
-| Atlassian Jira                     	| https://jira.example.com       	|
-| Atlassian Bitbucket                	| https://bitbucket.example.com  	|
-| Atlassian Confluence               	| https://confluence.example.com 	|
-| Jenkins                            	| https://jenkins.example.com    	|
-| Nexus Repository Manager           	| https://nexus.example.com      	|
-| SonarQube                          	| https://sonar.example.com      	|
-| Private Docker Registry (by Nexus) 	| https://docker.example.com     	|
+| Application                           | Version       | Address                        	|
+|------------------------------------   |-----------    |--------------------------------	|
+| Atlassian Jira                        | 8.5           | https://jira.example.com       	|
+| Atlassian Bitbucket                	| 6.8           | https://bitbucket.example.com  	|
+| Atlassian Confluence               	| -             | https://confluence.example.com 	|
+| Jenkins                            	| -             | https://jenkins.example.com    	|
+| Nexus Repository Manager           	| -             | https://nexus.example.com      	|
+| SonarQube                          	| -             | https://sonar.example.com      	|
+| Private Docker Registry (by Nexus) 	| -             | https://docker.example.com     	|
 
 
 #### Additional configuration
