@@ -5,19 +5,19 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6.13
+    name: postgres:9.6
     source: pull
 
 - name: Create Postgres container for Confluence
   docker_container:
     name: confluencedb
-    image: postgres:9.6.13
+    image: postgres:9.6
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - confluencedb
-    purge_networks: yes
     env:
       POSTGRES_USER: "{{ confluence_db_user }}"
       POSTGRES_PASSWORD: "{{ confluence_db_pass }}"
@@ -40,11 +40,11 @@
     name: confluence
     image: atlassian/confluence-server:6.15
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - confluence
-    purge_networks: yes
     env:
       CATALINA_CONNECTOR_PROXYNAME: "confluence.{{ domain }}"
       CATALINA_CONNECTOR_PROXYPORT: "443"

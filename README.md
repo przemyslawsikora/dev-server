@@ -18,10 +18,10 @@ Jenkins, Nexus and SonarQube are in community versions.
 2. Connect via SSH to your server as root user
 3. Install Ansible
    ```bash
-   sudo apt-get update
-   sudo apt-get install software-properties-common
-   sudo apt-add-repository --yes --update ppa:ansible/ansible
-   sudo apt-get install ansible
+   apt-get update
+   apt-get install software-properties-common
+   apt-add-repository --yes --update ppa:ansible/ansible
+   apt-get install ansible
    ```
 4. Clone the GIT repository (master branch)
    ```bash
@@ -61,12 +61,12 @@ After installation, you should have accessible following applications:
 | Application                           | Version       | Address                        	|
 |------------------------------------   |-----------    |--------------------------------	|
 | Atlassian Jira                        | 8.5           | https://jira.example.com       	|
-| Atlassian Bitbucket                	| 6.8           | https://bitbucket.example.com  	|
-| Atlassian Confluence               	| -             | https://confluence.example.com 	|
-| Jenkins                            	| -             | https://jenkins.example.com    	|
-| Nexus Repository Manager           	| -             | https://nexus.example.com      	|
-| SonarQube                          	| -             | https://sonar.example.com      	|
-| Private Docker Registry (by Nexus) 	| -             | https://docker.example.com     	|
+| Atlassian Bitbucket                   | 6.8           | https://bitbucket.example.com  	|
+| Atlassian Confluence                  | 6.15          | https://confluence.example.com 	|
+| Jenkins                               | -             | https://jenkins.example.com    	|
+| Nexus Repository Manager              | -             | https://nexus.example.com      	|
+| SonarQube                             | -             | https://sonar.example.com      	|
+| Private Docker Registry (by Nexus)    | -             | https://docker.example.com     	|
 
 
 #### Additional configuration
