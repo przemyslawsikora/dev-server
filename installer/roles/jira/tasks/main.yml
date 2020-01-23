@@ -32,13 +32,13 @@
 
 - name: Pull Jira Software Docker image
   docker_image:
-    name: atlassian/jira-software:8.5
+    name: atlassian/jira-software:8.6
     source: pull
 
 - name: Create Jira Software Docker container
   docker_container:
     name: jira
-    image: atlassian/jira-software:8.5
+    image: atlassian/jira-software:8.6
     restart_policy: always
     networks_cli_compatible: yes
     networks:
