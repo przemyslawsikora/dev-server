@@ -60,9 +60,9 @@ After installation, you should have accessible following applications:
 
 | Application                           | Version       | Address                        	|
 |------------------------------------   |-----------    |--------------------------------	|
-| Atlassian Jira                        | 8.5           | https://jira.example.com       	|
-| Atlassian Bitbucket                   | 6.8           | https://bitbucket.example.com  	|
-| Atlassian Confluence                  | 6.15          | https://confluence.example.com 	|
+| Atlassian Jira                        | 8.6           | https://jira.example.com       	|
+| Atlassian Bitbucket                   | 6.10          | https://bitbucket.example.com  	|
+| Atlassian Confluence                  | 7.0           | https://confluence.example.com 	|
 | Jenkins                               | -             | https://jenkins.example.com    	|
 | Nexus Repository Manager              | -             | https://nexus.example.com      	|
 | SonarQube                             | -             | https://sonar.example.com      	|
