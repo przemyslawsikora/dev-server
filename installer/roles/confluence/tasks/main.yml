@@ -5,13 +5,13 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6
+    name: postgres:10.12
     source: pull
 
 - name: Create Postgres container for Confluence
   docker_container:
     name: confluencedb
-    image: postgres:9.6
+    image: postgres:10.12
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -29,16 +29,16 @@
 - name: Create data volume for Confluence
   docker_volume:
     name: confluence-data
-      
+
 - name: Pull Confluence Docker image
   docker_image:
-    name: atlassian/confluence-server:7.0
+    name: atlassian/confluence-server:7.4
     source: pull
 
 - name: Create Confluence Server Docker container
   docker_container:
     name: confluence
-    image: atlassian/confluence-server:7.0
+    image: atlassian/confluence-server:7.4
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -54,7 +54,8 @@
       - confluence-data:/var/atlassian/application-data/confluence
     labels:
       traefik.enable: "true"
-      traefik.docker.network: "{{ docker_network_name }}"
-      traefik.port: "8090"
-      traefik.protocol: "http"
-      traefik.frontend.rule: "Host:confluence.{{ domain }}"
+      traefik.http.routers.confluence.rule: "Host(`confluence.{{ domain }}`)"
+      traefik.http.routers.confluence.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.confluence.entrypoints: "websecure"
+      traefik.http.routers.confluence.service: "confluence"
+      traefik.http.services.confluence.loadbalancer.server.port: "8090"

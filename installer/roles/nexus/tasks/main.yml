@@ -5,27 +5,30 @@
 
 - name: Pull Nexus Software Docker image
   docker_image:
-    name: sonatype/nexus3:3.16.1
+    name: sonatype/nexus3:3.22.1
     source: pull
 
 - name: Create Nexus Software Docker container
   docker_container:
     name: nexus
-    image: sonatype/nexus3:3.16.1
+    image: sonatype/nexus3:3.22.1
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
           - nexus
-    purge_networks: yes
-    labels:
-      traefik.enable: "true"
-      traefik.docker.network: "{{ docker_network_name }}"
-      traefik.nexus.frontend.rule: "Host:nexus.{{ domain }}"
-      traefik.nexus.protocol: "http"
-      traefik.nexus.port: "8081"
-      traefik.docker.frontend.rule: "Host:docker.{{ domain }}"
-      traefik.docker.protocol: "http"
-      traefik.docker.port: "8100"
     volumes:
       - nexus-data:/nexus-data
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.nexus.rule: "Host(`nexus.{{ domain }}`)"
+      traefik.http.routers.nexus.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.nexus.entrypoints: "websecure"
+      traefik.http.routers.nexus.service: "nexus"
+      traefik.http.services.nexus.loadbalancer.server.port: "8081"
+      traefik.http.routers.nexus-docker.rule: "Host(`docker.{{ domain }}`)"
+      traefik.http.routers.nexus-docker.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.nexus-docker.entrypoints: "websecure"
+      traefik.http.routers.nexus-docker.service: "nexus-docker"
+      traefik.http.services.nexus-docker.loadbalancer.server.port: "8100"

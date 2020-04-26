@@ -14,6 +14,7 @@
   become: yes
   roles:
     - sshd
+    - system
 
 - name: Install Docker
   hosts: all
@@ -23,6 +24,7 @@
     - geerlingguy.docker
     - geerlingguy.pip
   vars:
+    pip_package: python3-pip
     docker_users:
       - admin
     pip_install_packages:

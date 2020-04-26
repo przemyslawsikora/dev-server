@@ -19,9 +19,8 @@ Jenkins, Nexus and SonarQube are in community versions.
 3. Install Ansible
    ```bash
    apt-get update
-   apt-get install software-properties-common
-   apt-add-repository --yes --update ppa:ansible/ansible
-   apt-get install ansible
+   apt-get install python3-pip python3-setuptools
+   pip3 install ansible
    ```
 4. Clone the GIT repository (master branch)
    ```bash
@@ -53,21 +52,52 @@ Jenkins, Nexus and SonarQube are in community versions.
    ```
 11. Run installer
    ```bash
-   ansible-playbook site.yml -i production --ask-vault-pass
+   ansible-playbook installer.yml -i production --ask-vault-pass -e 'ansible_python_interpreter=/usr/bin/python3'
    ```
 
 After installation, you should have accessible following applications:
 
-| Application                           | Version       | Address                        	|
-|------------------------------------   |-----------    |--------------------------------	|
-| Atlassian Jira                        | 8.6           | https://jira.example.com       	|
-| Atlassian Bitbucket                   | 6.10          | https://bitbucket.example.com  	|
-| Atlassian Confluence                  | 7.0           | https://confluence.example.com 	|
-| Jenkins                               | -             | https://jenkins.example.com    	|
-| Nexus Repository Manager              | -             | https://nexus.example.com      	|
-| SonarQube                             | -             | https://sonar.example.com      	|
-| Private Docker Registry (by Nexus)    | -             | https://docker.example.com     	|
+| Application                           | Version         | Address (assuming your domain is example.com)  |
+|------------------------------------   |--------------   |---------------------------------------------   |
+| Atlassian Jira                        | 8.8             | https://jira.example.com                  	   |
+| Atlassian Bitbucket                   | 7.1             | https://bitbucket.example.com             	   |
+| Atlassian Confluence                  | 7.4             | https://confluence.example.com             	   |
+| Jenkins                               | 2.233           | https://jenkins.example.com               	   |
+| Nexus Repository Manager              | 3.22.1          | https://nexus.example.com                  	   |
+| SonarQube                             | 8.2 (community) | https://sonar.example.com                 	   |
+| Private Docker Registry (by Nexus)    | 3.22.1          | https://docker.example.com                	   |
 
+#### Post Configuration
+
+##### Jenkins
+To retrieve default password for the admin user, use the command:
+```bash
+docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+##### Nexus
+To retrieve default password for the admin user, use the command:
+```bash
+docker exec -it nexus cat /nexus-data/admin.password
+```
+To create Docker private registry, create new docker-hosted repository under Nexus Configuration panel and set the HTTP port in <code>Repository Connectors</code> to <code>8100</code>.  
+After that, you can push your Docker images like below:
+```bash
+docker tag {image} docker.{your_domain}/{image}
+docker login -u {nexus_user} docker.{your_domain}
+docker push docker.{your_domain}/{image}
+docker logout docker.{your_domain}
+```
+Example usage:
+```bash
+docker tag mongo:4.2 docker.example.com/mongo:4.2
+docker login -u admin docker.example.com
+docker push docker.example.com/mongo:4.2
+docker logout docker.example.com
+```
+
+##### SonarQube
+Default username and password is <code>admin</code> / <code>admin</code>
 
 #### Additional configuration
 
