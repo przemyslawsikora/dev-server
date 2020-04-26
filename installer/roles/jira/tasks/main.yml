@@ -5,13 +5,13 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6
+    name: postgres:10.12
     source: pull
 
 - name: Create Postgres container for Jira
   docker_container:
     name: jiradb
-    image: postgres:9.6
+    image: postgres:10.12
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -32,13 +32,13 @@
 
 - name: Pull Jira Software Docker image
   docker_image:
-    name: atlassian/jira-software:8.6
+    name: atlassian/jira-software:8.8
     source: pull
 
 - name: Create Jira Software Docker container
   docker_container:
     name: jira
-    image: atlassian/jira-software:8.6
+    image: atlassian/jira-software:8.8
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -54,7 +54,8 @@
       - jira-data:/var/atlassian/application-data/jira
     labels:
       traefik.enable: "true"
-      traefik.docker.network: "{{ docker_network_name }}"
-      traefik.port: "8080"
-      traefik.protocol: "http"
-      traefik.frontend.rule: "Host:jira.{{ domain }}"
+      traefik.http.routers.jira.rule: "Host(`jira.{{ domain }}`)"
+      traefik.http.routers.jira.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.jira.entrypoints: "websecure"
+      traefik.http.routers.jira.service: "jira"
+      traefik.http.services.jira.loadbalancer.server.port: "8080"

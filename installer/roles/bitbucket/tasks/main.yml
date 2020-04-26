@@ -5,13 +5,13 @@
 
 - name: Pull Postgres Docker image
   docker_image:
-    name: postgres:9.6
+    name: postgres:10.12
     source: pull
 
 - name: Create Postgres container for Bitbucket
   docker_container:
     name: bitbucketdb
-    image: postgres:9.6
+    image: postgres:10.12
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -32,13 +32,13 @@
       
 - name: Pull Bitbucket Docker image
   docker_image:
-    name: atlassian/bitbucket-server:6.10
+    name: atlassian/bitbucket-server:7.1
     source: pull
 
 - name: Create Bitbucket Server Docker container
   docker_container:
     name: bitbucket
-    image: atlassian/bitbucket-server:6.10
+    image: atlassian/bitbucket-server:7.1
     restart_policy: always
     networks_cli_compatible: yes
     networks:
@@ -54,7 +54,8 @@
       - bitbucket-data:/var/atlassian/application-data/bitbucket
     labels:
       traefik.enable: "true"
-      traefik.docker.network: "{{ docker_network_name }}"
-      traefik.port: "7990"
-      traefik.protocol: "http"
-      traefik.frontend.rule: "Host:bitbucket.{{ domain }}"
+      traefik.http.routers.bitbucket.rule: "Host(`bitbucket.{{ domain }}`)"
+      traefik.http.routers.bitbucket.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.bitbucket.entrypoints: "websecure"
+      traefik.http.routers.bitbucket.service: "bitbucket"
+      traefik.http.services.bitbucket.loadbalancer.server.port: "7990"

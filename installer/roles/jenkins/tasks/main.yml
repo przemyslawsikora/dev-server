@@ -5,14 +5,15 @@
 
 - name: Pull Jenkins Docker image
   docker_image:
-    name: jenkins/jenkins:lts-jdk11
+    name: jenkins/jenkins:2.233
     source: pull
 
 - name: Create Jenkins Docker container
   docker_container:
     name: jenkins
-    image: jenkins/jenkins:lts-jdk11
+    image: jenkins/jenkins:2.233
     restart_policy: always
+    networks_cli_compatible: yes
     networks:
       - name: "{{ docker_network_name }}"
         aliases:
@@ -24,7 +25,8 @@
       - jenkins-data:/var/jenkins_home
     labels:
       traefik.enable: "true"
-      traefik.docker.network: "{{ docker_network_name }}"
-      traefik.port: "8080"
-      traefik.protocol: "http"
-      traefik.frontend.rule: "Host:jenkins.{{ domain }}"
+      traefik.http.routers.jenkins.rule: "Host(`jenkins.{{ domain }}`)"
+      traefik.http.routers.jenkins.tls.certresolver: "letsEncrypt"
+      traefik.http.routers.jenkins.entrypoints: "websecure"
+      traefik.http.routers.jenkins.service: "jenkins"
+      traefik.http.services.jenkins.loadbalancer.server.port: "8080"

@@ -1,0 +1,6 @@
+---
+- name: Increase the virtual memory
+  sysctl:
+    name: vm.max_map_count
+    value: "262144"
+    sysctl_set: yes
