@@ -1,4 +1,4 @@
-## Dev Server
+# Dev Server
 
 This repository contains installer that allows you to set up the system for software development.  
 Dev Server includes:
@@ -12,7 +12,7 @@ Dev Server includes:
 **Note**: You must have licenses for Atlassian products!  
 Jenkins, Nexus and SonarQube are in community versions.
 
-#### Guide to install the software
+### Guide to install the software
 
 1. Prepare server with Ubuntu (tested with Ubuntu 18.04)
 2. Connect via SSH to your server as root user
@@ -67,15 +67,15 @@ After installation, you should have accessible following applications:
 | SonarQube                             | 8.2 (community) | https://sonar.example.com                 	   |
 | Private Docker Registry (by Nexus)    | 3.22.1          | https://docker.example.com                	   |
 
-#### Post Configuration
+### Post Configuration
 
-##### Jenkins
+#### Jenkins
 To retrieve default password for the admin user, use the command:
 ```bash
 docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
-##### Nexus
+#### Nexus
 To retrieve default password for the admin user, use the command:
 ```bash
 docker exec -it nexus cat /nexus-data/admin.password
@@ -96,10 +96,10 @@ docker push docker.example.com/mongo:4.2
 docker logout docker.example.com
 ```
 
-##### SonarQube
+#### SonarQube
 Default username and password is <code>admin</code> / <code>admin</code>
 
-#### Additional configuration
+### Additional configuration
 
 1. To have Docker support in Jenkins:  
    https://getintodevops.com/blog/the-simple-way-to-run-docker-in-docker-for-ci
