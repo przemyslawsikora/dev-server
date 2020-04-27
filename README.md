@@ -20,7 +20,7 @@ Jenkins, Nexus and SonarQube are in community versions.
    ```bash
    apt-get update
    apt-get install python3-pip python3-setuptools
-   pip3 install ansible docker
+   pip3 install ansible
    ```
 4. Clone the GIT repository (master branch)
    ```bash
