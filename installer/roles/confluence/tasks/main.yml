@@ -32,13 +32,13 @@
 
 - name: Pull Confluence Docker image
   docker_image:
-    name: atlassian/confluence-server:7.4
+    name: atlassian/confluence-server:7.6
     source: pull
 
 - name: Create Confluence Server Docker container
   docker_container:
     name: confluence
-    image: atlassian/confluence-server:7.4
+    image: atlassian/confluence-server:7.6
     restart_policy: always
     networks_cli_compatible: yes
     networks:
