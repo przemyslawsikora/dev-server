@@ -60,7 +60,7 @@ After installation, you should have accessible following applications:
 | Application                           | Version         | Address (assuming your domain is example.com)  |
 |------------------------------------   |--------------   |---------------------------------------------   |
 | Atlassian Jira                        | 8.11             | https://jira.example.com                  	   |
-| Atlassian Bitbucket                   | 7.1             | https://bitbucket.example.com             	   |
+| Atlassian Bitbucket                   | 7.4             | https://bitbucket.example.com             	   |
 | Atlassian Confluence                  | 7.4             | https://confluence.example.com             	   |
 | Jenkins                               | 2.233           | https://jenkins.example.com               	   |
 | Nexus Repository Manager              | 3.22.1          | https://nexus.example.com                  	   |

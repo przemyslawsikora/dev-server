@@ -32,13 +32,13 @@
       
 - name: Pull Bitbucket Docker image
   docker_image:
-    name: atlassian/bitbucket-server:7.1
+    name: atlassian/bitbucket-server:7.4
     source: pull
 
 - name: Create Bitbucket Server Docker container
   docker_container:
     name: bitbucket
-    image: atlassian/bitbucket-server:7.1
+    image: atlassian/bitbucket-server:7.4
     restart_policy: always
     networks_cli_compatible: yes
     networks:
