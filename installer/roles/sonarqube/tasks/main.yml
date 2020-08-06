@@ -28,13 +28,13 @@
 
 - name: Pull SonarQube Docker image
   docker_image:
-    name: sonarqube:8.2-community
+    name: sonarqube:8.4-community
     source: pull
 
 - name: Create SonarQube Docker container
   docker_container:
     name: sonar
-    image: sonarqube:8.2-community
+    image: sonarqube:8.4-community
     restart_policy: always
     networks_cli_compatible: yes
     networks:
