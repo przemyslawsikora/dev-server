@@ -1,7 +1,7 @@
 ---
 - name: Pull Traefik Docker image
   docker_image:
-    name: traefik:2.2
+    name: traefik:2.3
     source: pull
 
 - name: Build the configuration file
@@ -18,7 +18,7 @@
 - name: Create Traefik Docker container
   docker_container:
     name: traefik
-    image: traefik:2.2
+    image: traefik:2.3
     restart_policy: always
     networks_cli_compatible: yes
     networks:
