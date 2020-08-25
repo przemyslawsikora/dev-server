@@ -62,7 +62,7 @@ After installation, you should have accessible following applications:
 | Atlassian Jira                        | 8.11            | https://jira.example.com                  	   |
 | Atlassian Bitbucket                   | 7.4             | https://bitbucket.example.com             	   |
 | Atlassian Confluence                  | 7.7             | https://confluence.example.com             	   |
-| Jenkins                               | 2.251           | https://jenkins.example.com               	   |
+| Jenkins                               | 2.254           | https://jenkins.example.com               	   |
 | Nexus Repository Manager              | 3.25.1          | https://nexus.example.com                  	   |
 | SonarQube                             | 8.4 (community) | https://sonar.example.com                 	   |
 | Private Docker Registry (by Nexus)    | 3.25.1          | https://docker.example.com                	   |

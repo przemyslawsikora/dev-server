@@ -5,13 +5,13 @@
 
 - name: Pull Jenkins Docker image
   docker_image:
-    name: jenkins/jenkins:2.251
+    name: jenkins/jenkins:2.254
     source: pull
 
 - name: Create Jenkins Docker container
   docker_container:
     name: jenkins
-    image: jenkins/jenkins:2.251
+    image: jenkins/jenkins:2.254
     restart_policy: always
     networks_cli_compatible: yes
     networks:
