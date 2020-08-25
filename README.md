@@ -65,7 +65,7 @@ After installation, you should have accessible following applications:
 | Jenkins                               | 2.254           | https://jenkins.example.com               	   |
 | Nexus Repository Manager              | 3.26.1          | https://nexus.example.com                  	   |
 | SonarQube                             | 8.4 (community) | https://sonar.example.com                 	   |
-| Private Docker Registry (by Nexus)    | 3.25.1          | https://docker.example.com                	   |
+| Private Docker Registry (by Nexus)    | 3.26.1          | https://docker.example.com                	   |
 
 ### Post Configuration
 
