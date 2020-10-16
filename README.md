@@ -59,7 +59,7 @@ After installation, you should have accessible following applications:
 
 | Application                           | Version         | Address (assuming your domain is example.com)  |
 |------------------------------------   |--------------   |---------------------------------------------   |
-| Atlassian Jira                        | 8.11            | https://jira.example.com                  	   |
+| Atlassian Jira                        | 8.13            | https://jira.example.com                  	   |
 | Atlassian Bitbucket                   | 7.4             | https://bitbucket.example.com             	   |
 | Atlassian Confluence                  | 7.7             | https://confluence.example.com             	   |
 | Jenkins                               | 2.254           | https://jenkins.example.com               	   |
